@@ -68,6 +68,15 @@ export function UpdateTaskForm({ setOpen, task, taskId }: UpdateTaskFormProps) {
         Object.entries(values).filter((value) => value[1])
       );
 
+      if (
+        updatedData.closing_date &&
+        typeof updatedData.closing_date === "string"
+      ) {
+        updatedData.closing_date = new Date(updatedData.closing_date);
+      }
+
+      console.log(updatedData);
+
       const task = await updateTask(taskId, updatedData);
 
       toast.success(`Task ${values.title} updated successfully`);
