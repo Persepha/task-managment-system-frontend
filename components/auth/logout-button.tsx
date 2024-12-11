@@ -13,7 +13,7 @@ export function LogoutButton() {
         await logout();
         router.push("/signin");
       }}
-      className="w-full flex justify-start"
+      className="w-full flex justify-start px-2 py-1.5"
     >
       Log out
     </Button>

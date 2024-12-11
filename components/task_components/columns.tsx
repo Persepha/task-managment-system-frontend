@@ -77,6 +77,18 @@ export const columns: ColumnDef<TaskOutputDTO>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Priority" />
     ),
+    sortingFn: (rowA, rowB, columnId) => {
+      const value = (A: string): number => {
+        return A === "Low" ? 1 : A === "Medium" ? 2 : 3;
+      };
+
+      const Anum = value(rowA.original.priority);
+      const Bnum = value(rowB.original.priority);
+
+      if (Anum === Bnum) return 0;
+
+      return Anum < Bnum ? 1 : -1;
+    },
     cell: ({ row }) => {
       const priority = priorities.find(
         (priority) => priority.value === row.getValue("priority")
@@ -138,13 +150,13 @@ export const columns: ColumnDef<TaskOutputDTO>[] = [
     cell: ({ row }) => {
       const date = row.getValue<Date>("closing_date");
 
-      return (
+      return date ? (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
             {format(date, "do MMMM yyyy HH:mm")}
           </span>
         </div>
-      );
+      ) : null;
     },
   },
   {

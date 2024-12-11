@@ -25,7 +25,10 @@ export function UpdateTaskButton({ taskId, task }: UpdateTaskButtonProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="w-full flex justify-start">
+        <Button
+          variant="ghost"
+          className="w-full flex justify-start px-2 py-1.5"
+        >
           Edit
         </Button>
       </DialogTrigger>

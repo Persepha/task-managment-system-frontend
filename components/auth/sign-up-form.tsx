@@ -27,6 +27,7 @@ import { signUp } from "@/lib/auth";
 import type { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Inputs = z.infer<typeof signUpSchema>;
 
@@ -137,6 +138,12 @@ export function SignUpForm() {
             </Button>
           </form>
         </Form>
+        <div className="mt-4 text-center text-sm">
+          Already have an account?{" "}
+          <Link href="/signin" className="underline">
+            Sign in
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );

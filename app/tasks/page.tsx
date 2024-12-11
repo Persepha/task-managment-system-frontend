@@ -5,6 +5,7 @@ import { getTasks } from "@/lib/fetchers/task";
 import { UserNav } from "@/components/auth/user-nav";
 import { getMe } from "@/lib/fetchers/user";
 import { redirect } from "next/navigation";
+import { ThemeDropdown } from "@/components/theme-dropdown";
 
 export default async function Page() {
   const data = await getTasks();
@@ -25,6 +26,7 @@ export default async function Page() {
         </div>
         <div className="flex items-center space-x-2">
           <UserNav user={user} />
+          <ThemeDropdown />
         </div>
       </div>
       <DataTable columns={columns} data={data} />
