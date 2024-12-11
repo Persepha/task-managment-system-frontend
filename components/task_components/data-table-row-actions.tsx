@@ -20,7 +20,7 @@ import DeleteTaskButton from "@/components/task_components/delete-task-button";
 import { copyToClipboard } from "@/lib/utils";
 import { taskSchema } from "@/lib/dto/task.dto";
 import { toast } from "sonner";
-import { statuses } from "@/components/task_components/data-types";
+import { priorities, statuses } from "@/components/task_components/data-types";
 import { updateTask } from "@/lib/queries/task";
 import { getMe } from "@/lib/queries/auth";
 import { useRouter } from "next/navigation";
@@ -39,10 +39,12 @@ export function DataTableRowActions<TData>({
     actualValue,
     id,
     value,
+    isPriority = false,
   }: {
     value: string;
     id: string;
     actualValue: string;
+    isPriority: boolean;
   }) {
     // Check if the user is logged in and auth token is valid
     if (actualValue === value) return;
@@ -51,9 +53,16 @@ export function DataTableRowActions<TData>({
     if (!user) router.push("/signin");
 
     try {
-      const res = await updateTask(id, {
-        status: value.toLowerCase() as "pending" | "in process" | "done",
-      });
+      if (isPriority) {
+        const res = await updateTask(id, {
+          priority: value.toLowerCase() as "low" | "medium" | "high",
+        });
+      } else {
+        const res = await updateTask(id, {
+          status: value.toLowerCase() as "pending" | "in process" | "done",
+        });
+      }
+
       toast.success("Task updated");
       router.refresh();
     } catch (error) {
@@ -107,12 +116,38 @@ export function DataTableRowActions<TData>({
                   value: e,
                   actualValue: task.status,
                   id: task.id.toString(),
+                  isPriority: false,
                 })
               }
             >
               {statuses.map((status) => (
                 <DropdownMenuRadioItem key={status.value} value={status.value}>
                   {status.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Priority</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuRadioGroup
+              value={task.priority}
+              onValueChange={(e) =>
+                handleUpdateTaskStatus({
+                  value: e,
+                  actualValue: task.priority,
+                  id: task.id.toString(),
+                  isPriority: true,
+                })
+              }
+            >
+              {priorities.map((priority) => (
+                <DropdownMenuRadioItem
+                  key={priority.value}
+                  value={priority.value}
+                >
+                  {priority.label}
                 </DropdownMenuRadioItem>
               ))}
             </DropdownMenuRadioGroup>
