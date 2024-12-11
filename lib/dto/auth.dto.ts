@@ -3,6 +3,13 @@ export interface SignInFormDto {
     password: string;
 }
 
+export interface SignUpFormDto {
+    username: string;
+    email: string;
+    password1: string;
+    password2: string;
+}
+
 interface SignInUserDto {
     id: number;
     username: string;

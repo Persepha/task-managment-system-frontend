@@ -125,9 +125,24 @@ export const columns: ColumnDef<TaskOutputDTO>[] = [
       return value.includes(row.getValue(id));
     },
   },
+  // {
+  //   accessorKey: "closing_date",
+  //   header: "Closing Date",
+  // },
   {
     accessorKey: "closing_date",
-    header: "Closing Date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Closing Date" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("closing_date")}
+          </span>
+        </div>
+      );
+    },
   },
   {
     id: "actions",
