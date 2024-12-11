@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { priorities, statuses } from "./data-types";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
+import { format } from "date-fns";
 
 export const columns: ColumnDef<TaskOutputDTO>[] = [
   {
@@ -135,10 +136,12 @@ export const columns: ColumnDef<TaskOutputDTO>[] = [
       <DataTableColumnHeader column={column} title="Closing Date" />
     ),
     cell: ({ row }) => {
+      const date = row.getValue<Date>("closing_date");
+
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("closing_date")}
+            {format(date, "do MMMM yyyy HH:mm")}
           </span>
         </div>
       );
