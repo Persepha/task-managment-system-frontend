@@ -15,13 +15,5 @@ export default function UpdateStoreError({
     console.error(error);
   }, [error]);
 
-  return (
-    // <ErrorCard
-    //   title={error.name}
-    //   description={error.message}
-    //   reset={reset}
-    //   className="mx-auto max-w-md pt-20"
-    // />
-    <h1>{error.message} !</h1>
-  );
+  return <h1>{error.message}</h1>;
 }

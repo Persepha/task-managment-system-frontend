@@ -1,16 +1,28 @@
 import { TASKS_URL } from "../consts/apiUrls";
-import { TaskDTO, TaskOutputDTO } from "../dto/task.dto";
+import { TaskOutputDTO } from "../dto/task.dto";
 import { getMe } from "./user";
 import { redirect } from "next/navigation";
 import { ErrorResponse } from "../consts/types";
-import { getCookie, getCookies } from "cookies-next";
+import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
-import { taskCreateSchema } from "@/lib/validations/task";
 
 export async function getTaskById(
   id: string
 ): Promise<TaskOutputDTO | { error: string }> {
-  const res = await fetch(TASKS_URL + id, { cache: "no-store" });
+  const user = await getMe();
+  if (!user) {
+    redirect("/signin");
+  }
+
+  const cookieStore = cookies();
+  const access_token = cookieStore.get("_auth");
+
+  const res = await fetch(TASKS_URL + id, {
+    cache: "no-store",
+    headers: {
+      Cookie: `_auth=${access_token?.value}`,
+    },
+  });
 
   if (!res.ok) {
     const data = (await res.json()) as ErrorResponse;
